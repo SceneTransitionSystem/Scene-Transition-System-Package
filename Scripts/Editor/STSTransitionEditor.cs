@@ -43,6 +43,49 @@ namespace SceneTransitionSystem
             SPInterEffectDuration = serializedObject.FindProperty("InterEffectDuration");
             SPEffectOnExit = serializedObject.FindProperty("EffectOnExit");
         }
+        private static bool IsAssemblyLoaded(string sAssemblyName)
+        {
+            // Récupère toutes les assemblies chargées dans l'application
+            var tAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+            // Vérifie si une assembly correspond au nom donné
+            return tAssemblies.Any(assembly => assembly.GetName().Name.Equals(sAssemblyName, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public static void CheckExtension()
+        {
+            if (IsAssemblyLoaded("Unity.Addressables"))
+            {
+                if (IsAssemblyLoaded("SceneTransitionSystemAddressableAssembly"))
+                {
+                    //EditorGUILayout.Separator();
+                    //GUILayout.Label("Addressable activated");
+                }
+                else
+                {
+                    //EditorGUILayout.Separator();
+                    //GUILayout.Label("go to store to install addressable extension");
+                    if (GUILayout.Button("download addressable extension"))
+                    {
+                        Application.OpenURL("https://www.yahoo.fr");
+                    }
+                }
+            }
+            else
+            {
+                GUILayout.Label("Addressable not active");
+            }
+            
+            
+            if (!IsAssemblyLoaded("SceneTransitionSystemPackOne") || !IsAssemblyLoaded("SceneTransitionSystemPackTwo") || !IsAssemblyLoaded("SceneTransitionSystemPackThree"))
+            {
+                if (GUILayout.Button("Download additional effects"))
+                {
+                    Application.OpenURL("https://www.yahoo.fr");
+                }
+            }
+            
+            
+        }
 
         /// <summary>
         /// Custom inspector GUI for the STSTransition component.
@@ -59,6 +102,7 @@ namespace SceneTransitionSystem
             EditorGUILayout.PropertyField(SPEffectOnEnter);
             EditorGUILayout.PropertyField(SPEffectOnExit);
             EditorGUILayout.PropertyField(SPInterEffectDuration);
+            CheckExtension();
             serializedObject.ApplyModifiedProperties();
         }
     }

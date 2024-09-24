@@ -18,7 +18,7 @@ namespace SceneTransitionSystem
 
         public static void AddToEffectList<T>() where T : STSEffect
         {
-            // Debug.Log("Add effect " + typeof(T).Name + " to list");
+            Debug.Log("Add effect " + typeof(T).Name + " to list");
             EffectList.Add(typeof(T));
         }
 
